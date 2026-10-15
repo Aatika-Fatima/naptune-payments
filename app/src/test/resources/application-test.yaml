@@ -1,0 +1,11 @@
+spring:
+  ai:
+    google:
+      genai:
+        api-key: test-key
+        embedding:
+          api-key: test-key
+
+payout:
+  scheduling:
+    enabled: false

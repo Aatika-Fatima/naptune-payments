@@ -1,0 +1,28 @@
+# Local PostgreSQL for running `app`. Tests do not use this: they start their
+# own throwaway Postgres through Testcontainers.
+#
+#   docker compose up -d        start (data kept in the named volume)
+#   docker compose down -v      stop and delete all data: a fresh database at V1
+#
+# Values come from .env at the repo root, the same file app reads.
+# pgvector/pgvector is postgres 16 plus the vector extension that build step 13
+# (document retrieval) needs; until then it behaves exactly like postgres:16.
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: naptune_payments
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d naptune_payments"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  postgres-data:
