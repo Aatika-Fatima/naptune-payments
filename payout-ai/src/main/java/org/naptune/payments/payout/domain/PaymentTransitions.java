@@ -9,6 +9,7 @@ import static org.naptune.payments.payout.domain.PaymentStatus.VALIDATING;
 import java.util.Map;
 import java.util.Set;
 import org.naptune.payments.payout.domain.exception.PayoutException.IllegalPaymentTransitionException;
+import org.naptune.payments.payout.entity.SupplierPayment;
 
 public final class PaymentTransitions {
 

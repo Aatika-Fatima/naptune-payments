@@ -2,11 +2,12 @@ package org.naptune.payments.payout.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.naptune.payments.payout.domain.TestPayments.paymentIn;
+import static org.naptune.payments.payout.entity.TestPayments.paymentIn;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.naptune.payments.payout.domain.exception.PayoutException.IllegalPaymentTransitionException;
+import org.naptune.payments.payout.entity.SupplierPayment;
 
 // VALIDATING → DEFERRED (only deferrals). The bank change is approved, so the
 // beneficiary check passes, but compliance still returns 503. Decision 2

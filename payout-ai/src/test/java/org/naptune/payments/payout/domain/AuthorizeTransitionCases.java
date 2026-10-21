@@ -2,13 +2,14 @@ package org.naptune.payments.payout.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.naptune.payments.payout.domain.TestPayments.paymentIn;
+import static org.naptune.payments.payout.entity.TestPayments.paymentIn;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.naptune.payments.payout.domain.exception.PayoutException.IllegalPaymentTransitionException;
+import org.naptune.payments.payout.entity.SupplierPayment;
 
 // VALIDATING → AUTHORIZED (all pass). Compliance is back and screens XXXX9931
 // CLEAR; all six checks pass on fresh evidence. Decision 3 is valid for

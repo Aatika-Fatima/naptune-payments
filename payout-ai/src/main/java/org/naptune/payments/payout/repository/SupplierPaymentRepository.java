@@ -1,9 +1,9 @@
-package org.naptune.payments.payout.persistence;
+package org.naptune.payments.payout.repository;
 
 import jakarta.persistence.LockModeType;
 import java.util.Optional;
 import java.util.UUID;
-import org.naptune.payments.payout.domain.SupplierPayment;
+import org.naptune.payments.payout.entity.SupplierPayment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;

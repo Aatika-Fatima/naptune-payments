@@ -2,13 +2,14 @@ package org.naptune.payments.payout.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.naptune.payments.payout.domain.TestPayments.paymentIn;
+import static org.naptune.payments.payout.entity.TestPayments.paymentIn;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.naptune.payments.payout.domain.exception.PayoutException.IllegalPaymentTransitionException;
+import org.naptune.payments.payout.entity.SupplierPayment;
 
 // PROPOSED → VALIDATING (claim). Agent A and Agent B propose the same
 // invoice; B arrives 40 ms later. The row lock that serialises them is in

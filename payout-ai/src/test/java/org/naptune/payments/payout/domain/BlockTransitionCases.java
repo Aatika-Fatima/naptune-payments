@@ -2,11 +2,12 @@ package org.naptune.payments.payout.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.naptune.payments.payout.domain.TestPayments.paymentIn;
+import static org.naptune.payments.payout.entity.TestPayments.paymentIn;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.naptune.payments.payout.domain.exception.PayoutException.IllegalPaymentTransitionException;
+import org.naptune.payments.payout.entity.SupplierPayment;
 
 // VALIDATING → BLOCKED (any block). Decision 1 carries BENEFICIARY_CHANGE_PENDING
 // (XXXX9931 is PENDING_SECOND_APPROVAL) and COMPLIANCE_EVIDENCE_UNAVAILABLE.

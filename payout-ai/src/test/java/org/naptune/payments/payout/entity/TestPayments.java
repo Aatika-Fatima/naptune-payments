@@ -1,14 +1,16 @@
-package org.naptune.payments.payout.domain;
+package org.naptune.payments.payout.entity;
+
+import org.naptune.payments.payout.domain.PaymentStatus;
 
 // Shared by the *TransitionCases classes, run through PaymentTransitionsTest.
-final class TestPayments {
+public final class TestPayments {
 
     private TestPayments() {
     }
 
-    // The protected constructor is reachable from this package; in the app,
+    // Lives in the entity package so it can reach the protected constructor; in the app,
     // rows come only from the repository's insert-or-load.
-    static SupplierPayment paymentIn(PaymentStatus status) {
+    public static SupplierPayment paymentIn(PaymentStatus status) {
         SupplierPayment payment = new SupplierPayment();
         payment.setStatus(status);
         return payment;

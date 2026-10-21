@@ -1,4 +1,4 @@
-package org.naptune.payments.payout.persistence;
+package org.naptune.payments.payout.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.naptune.payments.payout.TestcontainersConfiguration;
 import org.naptune.payments.payout.domain.DecisionStatus;
 import org.naptune.payments.payout.domain.PaymentStatus;
-import org.naptune.payments.payout.domain.SupplierPayment;
+import org.naptune.payments.payout.entity.SupplierPayment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
