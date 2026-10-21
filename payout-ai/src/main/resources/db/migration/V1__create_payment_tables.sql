@@ -20,3 +20,12 @@ CREATE TABLE payment (
 );
 -- All payments against one purchase order, e.g. both instalments of PO-94018.
 CREATE INDEX ix_payment_purchase_order ON payment (legal_entity_id, purchase_order_id);
+
+-- Original references, verbatim: INV-94018 and INV94018 both land here.
+CREATE TABLE invoice_alias (
+    payment_id      UUID NOT NULL REFERENCES payment (id),
+    raw_reference   VARCHAR(64) NOT NULL,
+    submitted_by    VARCHAR(64) NOT NULL,
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+    PRIMARY KEY (payment_id, raw_reference, submitted_by)
+);
