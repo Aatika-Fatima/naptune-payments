@@ -27,13 +27,13 @@ class PaymentTableTest {
     JdbcClient jdbc;
 
     @Test
-    void flywayAppliedV1() {
+    void flywayAppliedV2AfterV1() {
         List<String> applied = jdbc.sql("""
                 SELECT version FROM flyway_schema_history
                 WHERE success ORDER BY installed_rank""")
                 .query(String.class).list();
 
-        assertThat(applied).containsExactly("1");
+        assertThat(applied).containsExactly("1", "2");
     }
 
     @Test

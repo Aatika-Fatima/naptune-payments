@@ -29,3 +29,13 @@ CREATE TABLE invoice_alias (
     created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
     PRIMARY KEY (payment_id, raw_reference, submitted_by)
 );
+
+-- Client retries. Same key + same hash = replay; same key + different hash = conflict.
+CREATE TABLE api_idempotency (
+    client_id        VARCHAR(64) NOT NULL,
+    idempotency_key  VARCHAR(80) NOT NULL,
+    request_hash     VARCHAR(64) NOT NULL,
+    payment_id       UUID NOT NULL REFERENCES payment (id),
+    created_at       TIMESTAMPTZ NOT NULL DEFAULT now(),
+    PRIMARY KEY (client_id, idempotency_key)
+);
