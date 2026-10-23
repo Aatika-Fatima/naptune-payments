@@ -12,3 +12,15 @@ CREATE TABLE evidence_record (
     recorded_at      TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 CREATE INDEX ix_evidence_payment ON evidence_record (payment_id);
+
+CREATE TABLE payment_decision (
+    id               BIGSERIAL PRIMARY KEY,
+    payment_id       UUID NOT NULL REFERENCES payment (id),
+    decision         VARCHAR(16) NOT NULL,
+    reason_codes     JSONB NOT NULL,
+    evidence_ids     JSONB NOT NULL,
+    policy_version   VARCHAR(32) NOT NULL,
+    valid_until      TIMESTAMPTZ NOT NULL,   -- the dispatch guard reads this in the next use case
+    decided_at       TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX ix_decision_payment ON payment_decision (payment_id, id DESC);
