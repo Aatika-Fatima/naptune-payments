@@ -24,3 +24,15 @@ CREATE TABLE payment_decision (
     decided_at       TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 CREATE INDEX ix_decision_payment ON payment_decision (payment_id, id DESC);
+
+CREATE TABLE audit_record (
+    id           BIGSERIAL PRIMARY KEY,
+    payment_id   UUID NOT NULL,
+    actor        VARCHAR(64) NOT NULL,
+    action       VARCHAR(48) NOT NULL,
+    from_state   VARCHAR(32),
+    to_state     VARCHAR(32),
+    detail       JSONB NOT NULL,
+    recorded_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX ix_audit_payment ON audit_record (payment_id, id);
