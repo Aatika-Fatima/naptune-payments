@@ -3,3 +3,7 @@ spring:
     hibernate:
       ddl-auto: validate
     open-in-view: false
+  jackson:
+    deserialization:
+      # As in app's application.yaml: a fractional paise value is refused.
+      accept-float-as-int: false
