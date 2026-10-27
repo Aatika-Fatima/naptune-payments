@@ -12,6 +12,7 @@ import java.util.UUID;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import org.naptune.payments.payout.domain.PaymentStatus;
+import org.naptune.payments.payout.policy.PaymentDecision;
 
 @Entity
 @Table(name = "audit_record")
@@ -69,7 +70,11 @@ public class AuditRecord {
         return new AuditRecord(paymentId, actor, "TRANSITION", from.name(), to.name(), Map.of("reason", reason));
     }
 
-    // decision(…) is added in step 7, once PaymentDecision exists.
+    public static AuditRecord decision(UUID paymentId, String actor, PaymentStatus from, PaymentStatus to,
+                                       PaymentDecision decision) {
+        return new AuditRecord(paymentId, actor, "DECISION", from.name(), to.name(),
+                Map.of("reason", String.join(",", decision.reasonCodes()), "decision", decision.decision().name()));
+    }
 
     public String getDetailReason() {
         return (String) detail.get("reason");

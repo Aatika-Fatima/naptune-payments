@@ -7,10 +7,12 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import org.naptune.payments.payout.policy.EvidenceSnapshot;
 import org.naptune.payments.payout.policy.Freshness;
 import org.naptune.payments.payout.policy.PaymentCheckType;
 
@@ -63,6 +65,14 @@ public class EvidenceRecord {
         this.sourceVersion = sourceVersion;
         this.sourceTime = sourceTime;
         this.freshness = freshness;
+    }
+
+    // One row per item in the snapshot, keeping the Evidence id.
+    public static List<EvidenceRecord> from(UUID paymentId, EvidenceSnapshot snapshot) {
+        return snapshot.items().values().stream()
+                .map(e -> new EvidenceRecord(e.id(), paymentId, e.paymentCheckType(), e.source(), e.value(),
+                        e.sourceVersion(), e.sourceTime(), e.freshness()))
+                .toList();
     }
 
     // Getters only: evidence is append-only.

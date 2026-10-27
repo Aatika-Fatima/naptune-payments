@@ -14,6 +14,7 @@ import java.util.UUID;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import org.naptune.payments.payout.policy.Decision;
+import org.naptune.payments.payout.policy.PaymentDecision;
 
 // Named ...Record: PaymentDecision is the policy's in-memory result (step 7).
 @Entity
@@ -60,6 +61,15 @@ public class PaymentDecisionRecord {
         this.evidenceIds = evidenceIds;
         this.policyVersion = policyVersion;
         this.validUntil = validUntil;
+    }
+
+    // Reason codes keep the engine's order (blocks, then investigations, then
+    // defers, each in check order), the same order the API returns and the
+    // DECISION audit row records.
+    public static PaymentDecisionRecord of(UUID paymentId, PaymentDecision decision, String policyVersion,
+                                           Instant validUntil) {
+        return new PaymentDecisionRecord(paymentId, decision.decision(),
+                List.copyOf(decision.reasonCodes()), decision.evidenceIds(), policyVersion, validUntil);
     }
 
     // Getters only: a re-evaluation adds a row, it never edits one.
