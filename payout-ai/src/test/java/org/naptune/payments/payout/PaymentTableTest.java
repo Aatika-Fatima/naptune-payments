@@ -15,7 +15,7 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-// Proves Flyway found and applied V1 against real Postgres: the payment table
+// Proves Flyway found and applied V1, V2 and V2.1 against real Postgres: the payment table
 // (singular, as in v1) exists with the columns and economic-action key that
 // build step 1 relies on.
 @SpringBootTest
@@ -27,13 +27,13 @@ class PaymentTableTest {
     JdbcClient jdbc;
 
     @Test
-    void flywayAppliedV2AfterV1() {
+    void flywayAppliedV1V2AndV21InOrder() {
         List<String> applied = jdbc.sql("""
                 SELECT version FROM flyway_schema_history
                 WHERE success ORDER BY installed_rank""")
                 .query(String.class).list();
 
-        assertThat(applied).containsExactly("1", "2");
+        assertThat(applied).containsExactly("1", "2", "2.1");
     }
 
     @Test
@@ -56,7 +56,8 @@ class PaymentTableTest {
                 "id", "legal_entity_id", "supplier_id", "normalized_invoice",
                 "obligation_id", "purchase_order_id", "amount_paise", "currency",
                 "beneficiary_fingerprint", "decision_status", "status",
-                "validating_since", "version", "created_at", "updated_at");
+                "validating_since", "version", "created_at", "updated_at",
+                "proposed_via", "proposed_by");
     }
 
     @Test

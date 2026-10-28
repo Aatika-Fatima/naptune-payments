@@ -11,6 +11,7 @@ import jakarta.persistence.Version;
 import java.time.Instant;
 import java.util.UUID;
 import org.naptune.payments.payout.domain.DecisionStatus;
+import org.naptune.payments.payout.domain.Origin;
 import org.naptune.payments.payout.domain.PaymentStatus;
 
 // Named SupplierPayment, not Payment: it is a payment to a supplier, and the
@@ -57,6 +58,18 @@ public class SupplierPayment {
 
     @Column(name = "validating_since")
     private Instant validatingSince;
+
+    // Written by the insert that created the row and never changed: a later
+    // alias from the other path does not rewrite who proposed it.
+    @Enumerated(EnumType.STRING)
+    @Column(name = "proposed_via", nullable = false, updatable = false, length = 16)
+    private Origin proposedVia;
+
+    // The proposing principal (agent:agent-a, scheduler). The authority source
+    // looks up this principal's delegation (gap G8). Rows from before V2.1 read
+    // "unknown".
+    @Column(name = "proposed_by", nullable = false, updatable = false, length = 80)
+    private String proposedBy;
 
     @Version
     private Long version;
@@ -122,6 +135,14 @@ public class SupplierPayment {
 
     public Instant getValidatingSince() {
         return validatingSince;
+    }
+
+    public Origin getProposedVia() {
+        return proposedVia;
+    }
+
+    public String getProposedBy() {
+        return proposedBy;
     }
 
     public Long getVersion() {
