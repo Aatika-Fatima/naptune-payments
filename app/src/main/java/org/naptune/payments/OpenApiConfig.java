@@ -3,6 +3,7 @@ package org.naptune.payments;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.parameters.Parameter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.springdoc.core.customizers.OpenApiCustomizer;
@@ -43,5 +44,29 @@ class OpenApiConfig {
                 request.setExample(scenario);
             }
         };
+    }
+
+    // The two headers open filled in too: Agent A's scenario request, and ops for
+    // a re-evaluation. A second "Execute" with the same key is a retry and gets
+    // 200; change the key to propose again.
+    @Bean
+    OpenApiCustomizer headerExamples() {
+        return openApi -> openApi.getPaths().forEach((path, item) -> item.readOperations().forEach(operation -> {
+            if (operation.getParameters() == null) {
+                return;
+            }
+            boolean evaluate = path.endsWith("/evaluate");
+            for (Parameter parameter : operation.getParameters()) {
+                if (!"header".equals(parameter.getIn())) {
+                    continue;
+                }
+                switch (parameter.getName()) {
+                    case "X-Client-Id" -> parameter.setExample(evaluate ? "ops" : "agent-a");
+                    case "Idempotency-Key" -> parameter.setExample("agent-a-request-123");
+                    default -> {
+                    }
+                }
+            }
+        }));
     }
 }
